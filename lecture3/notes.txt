@@ -24,3 +24,6 @@ python3 manage.py startapp hello
 # admin (default) and hello.
 # Inside urls.py for 'hello' app, there's a view 'index' and 'joe',
 # plus a parameterized path 'greet' that takes a name
+
+## Django Middleware CSRF
+# in settings.py, see CsrfViewMiddleware
