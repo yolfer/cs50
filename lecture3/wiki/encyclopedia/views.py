@@ -19,8 +19,6 @@ def entry(request, title):
             "entry": markdown2.markdown(entry_markdown)
         })
     else:
-        return HttpResponse(f"No entry found for for {title}!")
-    # return render(request, "hello/greet.html", {
-        # this is the context, all the variables passed to the template
-    #    "name": name.capitalize()
-    # })
+        return render(request, "encyclopedia/no_entry.html", {
+            "title": title
+        })
