@@ -1,3 +1,4 @@
+import random
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 import markdown2
@@ -33,3 +34,8 @@ def search(request):
             "query": query,
             "entries": matches
         })
+
+def random_entry(request):
+    all_entries = util.list_entries()
+    random_entry = random.choice(all_entries)
+    return redirect('entry', title=random_entry)
