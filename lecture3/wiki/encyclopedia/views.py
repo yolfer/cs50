@@ -1,5 +1,5 @@
 from django.http.response import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import markdown2
 
 from . import util
@@ -13,7 +13,6 @@ def index(request):
 def entry(request, title):
     entry_markdown = util.get_entry(title)
     if entry_markdown:
-        # return HttpResponse(markdown2.markdown(entry_markdown))
         return render(request, "encyclopedia/entry.html", {
             "title": title,
             "entry": markdown2.markdown(entry_markdown)
@@ -21,4 +20,16 @@ def entry(request, title):
     else:
         return render(request, "encyclopedia/no_entry.html", {
             "title": title
+        })
+
+def search(request):
+    query = request.GET.get('q', '')
+    if util.get_entry(query):
+        return redirect('entry', title=query)
+    else:
+        all_entries = util.list_entries()
+        matches = filter(lambda x: query.lower() in x.lower(), all_entries)
+        return render(request, "encyclopedia/search_results.html", {
+            "query": query,
+            "entries": matches
         })
