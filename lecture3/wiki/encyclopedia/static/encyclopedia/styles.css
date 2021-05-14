@@ -13,7 +13,7 @@ h1 {
 }
 
 textarea {
-    height: 90vh;
+    height: 50vh;
     width: 80%;
 }
 
@@ -35,4 +35,18 @@ textarea {
 
 .sidebar h2 {
     margin-top: 5px;
+}
+
+#new_entry_form label {
+    display: block;
+    margin: 5px auto;
+}
+
+#new_entry_form input[type="submit"] {
+    display: block;
+}
+
+.errorlist {
+    background-color: lightcoral;
+    width: 80%;
 }
