@@ -2,7 +2,6 @@ import random
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 import markdown2
 
@@ -17,6 +16,10 @@ def validate_unique_title(title):
 
 class NewEntryForm(forms.Form):
     title = forms.CharField(label="Title", validators=[validate_unique_title])
+    content = forms.CharField(label="Content", widget=forms.Textarea)
+
+class EditEntryForm(forms.Form):
+    title = forms.CharField(label="Title")
     content = forms.CharField(label="Content", widget=forms.Textarea)
 
 def index(request):
@@ -63,9 +66,35 @@ def new(request):
             return redirect('entry', title=title)
         else:
             return render(request, "encyclopedia/new.html", {
-                "form":form
+                "form": form
             })
   
     return render(request, "encyclopedia/new.html", {
         "form": NewEntryForm()
     })
+
+def edit_entry(request, title):
+    if request.method == "POST":
+        form = EditEntryForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
+            util.save_entry(title, content)
+            return redirect('entry', title=title)
+        else:
+            return render(request, "encyclopedia/edit.html", {
+                "title": title,
+                "form": form
+            })
+
+    entry_markdown = util.get_entry(title)
+    if entry_markdown:
+        form = EditEntryForm({"title": title, "content": entry_markdown})
+        return render(request, "encyclopedia/edit.html", {
+            "title": title,
+            "form": form
+        })
+    else:
+        return render(request, "encyclopedia/no_entry.html", {
+            "title": title
+        })
