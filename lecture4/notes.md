@@ -178,3 +178,14 @@ In [21]: cdg
 Out[21]: <Airport: Paris (CDG)>
 In [22]: f = Flight(origin=jfk, destination=cdg, duration=435)
 In [23]: f.save()
+
+## Adding data with a buit-in Web UI
+
+Django already built an app for CRUD
+Django Admin app
+
+Need to create an admin account
+`python manage.py createsuperuser`
+
+then register the models in `admin.py`
+then visit the `/admin` url and login
